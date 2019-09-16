@@ -28,16 +28,14 @@ class TaskForm extends Component {
         name: nextProps.task.name,
         status: nextProps.task.status
       });
-    } else {
-      this.onClear();
+    } 
+    else if (!nextProps.task) {
+      this.setState({
+        id: "",
+        name: "",
+        status: "small"
+      });
     }
-    // else if (!nextProps.task) {
-    //   this.setState({
-    //     id: "",
-    //     name: "",
-    //     status: "small"
-    //   });
-    // }
   }
 
   // onSubmit = event => {
@@ -48,6 +46,8 @@ class TaskForm extends Component {
   // };
   onSubmit = field => {
     this.props.onSubmit(field);
+    this.onClear();
+    this.onCloseForm();
   };
 
   // onChange = event => {
@@ -63,7 +63,7 @@ class TaskForm extends Component {
   };
   onClear = () => {
     this.setState({
-      id: "",
+      // id: "",
       name: "",
       status: "small"
     });
