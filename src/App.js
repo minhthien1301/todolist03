@@ -3,37 +3,36 @@ import "./App.css";
 import Control from "./Components/Control.js";
 import TaskForm from "./Components/TaskForm.js";
 import TaskList from "./Components/TaskList.js";
-import Demo from './training/demo.js';
+import {connect} from "react-redux";
+import * as actions from "./actions/index"
+
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tasks: [],
-      isDispPlayFrom: false,
-      tsskEditting: null,
-      keyword: "",
-      filter: {
-        name: "",
-        level: -1
-      },
-      sortValue: 0
-    };
-  }
+
   //function open or close
-  onToggleForm = () => {
-    if (this.state.isDispPlayFrom && this.state.taskEditting !== null) {
-      this.setState({
-        isDispPlayFrom: true,
-        taskEditting: null
-      });
-    } else {
-      this.setState({
-        isDispPlayFrom: !this.state.isDispPlayFrom,
-        taskEditting: null
-      });
+  // onToggleForm = () => {
+  //   if (this.state.isDispPlayFrom && this.state.taskEditting !== null) {
+  //     this.setState({
+  //       isDispPlayFrom: true,
+  //       taskEditting: null
+  //     });
+  //   } else {
+  //     this.setState({
+  //       isDispPlayFrom: !this.state.isDispPlayFrom,
+  //       taskEditting: null
+  //     });
+  //   }
+  // };
+    onToggleForm =() => {
+      var {isDisplayForm, itemEditting} = this.props;
+      if(isDisplayForm === true && itemEditting !== null){
+        this.props.onEditTask(null);
+      }
+      else{ 
+        this.props.onToggleForm();
+        // this.props.onEditTask(null);
+      }
     }
-  };
   // được gọi khi reset
   componentWillMount() {
     if (localStorage && localStorage.getItem("tasks")) {
@@ -43,51 +42,7 @@ class App extends Component {
       });
     }
   }
-  ongerenateData = () => {
-    var tasks = [
-      {
-        id: this.generateId(),
-        name: "Học lập trình",
-        status: "hight"
-      },
-      {
-        id: this.generateId(),
-        name: "học Reactjs",
-        status: "medium"
-      },
-      {
-        id: this.generateId(),
-        name: "học .net",
-        status: "small"
-      }
-    ];
-    this.setState({
-      tasks: tasks
-    });
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  };
-
-  randomId() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  generateId() {
-    return (
-      this.randomId() +
-      this.randomId() +
-      "-" +
-      this.randomId() +
-      "-" +
-      this.randomId() +
-      "-" +
-      this.randomId() +
-      "-" +
-      this.randomId() +
-      this.randomId() +
-      this.randomId()
-    );
-  }
+  
   //đưa dữ liệu từ taskForm App
   onSubmit = data => {
     var { tasks } = this.state;
@@ -105,29 +60,29 @@ class App extends Component {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
   //hàm tìm kiếm id trả về vị trí
-  findIndex = id => {
-    var { tasks } = this.state;
-    var resulf = -1;
-    tasks.forEach((task, index) => {
-      if (task.id === id) {
-        resulf = index;
-      }
-    });
-    return resulf;
-  };
+  // findIndex = id => {
+  //   var { tasks } = this.state;
+  //   var resulf = -1;
+  //   tasks.forEach((task, index) => {
+  //     if (task.id === id) {
+  //       resulf = index;
+  //     }
+  //   });
+  //   return resulf;
+  // };
   //hàm xóa
-  onDelete = id => {
-    var { tasks } = this.state;
-    var index = this.findIndex(id);
-    if (index !== -1) {
-      tasks.splice(index, 1);
-      this.setState({
-        tasks: tasks
-      });
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-    this.onCloseForm();
-  };
+  // onDelete = id => {
+  //   var { tasks } = this.state;
+  //   var index = this.findIndex(id);
+  //   if (index !== -1) {
+  //     tasks.splice(index, 1);
+  //     this.setState({
+  //       tasks: tasks
+  //     });
+  //     localStorage.setItem("tasks", JSON.stringify(tasks));
+  //   }
+  //   this.onCloseForm();
+  // };
   onEdit = id => {
     var { tasks } = this.state;
     var index = this.findIndex(id);
@@ -160,40 +115,24 @@ class App extends Component {
     });
   };
   render() {
-    var {
-      tasks,
-      isDispPlayFrom,
-      taskEditting,
-      keyword,
-      sortValue
-    } = this.state;
-    var elmTaskFrom = isDispPlayFrom ? (
-      <TaskForm
-        onCloseForm={this.onCloseForm}
-        onSubmit={this.onSubmit}
-        task={taskEditting}
-      />
-    ) : (
-      ""
-    );
 
-    if (keyword) {
-      tasks = tasks.filter(task => {
-        return task.name.toLowerCase().indexOf(keyword) !== -1;
-      });
-    }
-    if (sortValue) {
-      tasks.sort((a, b) => {
-        var nameA = a.name.toUpperCase();
-        var nameB = b.name.toUpperCase();
-        if (nameA > nameB) {
-          return -sortValue;
-        } else if (nameA < nameB) {
-          return sortValue;
-        }
-        return 0;
-      });
-    }
+    // if (keyword) {
+    //   tasks = tasks.filter(task => {
+    //     return task.name.toLowerCase().indexOf(keyword) !== -1;
+    //   });
+    // }
+    // if (sortValue) {
+    //   tasks.sort((a, b) => {
+    //     var nameA = a.name.toUpperCase();
+    //     var nameB = b.name.toUpperCase();
+    //     if (nameA > nameB) {
+    //       return -sortValue;
+    //     } else if (nameA < nameB) {
+    //       return sortValue;
+    //     }
+    //     return 0;
+    //   });
+    // }
     return (
       <div className="container">
         <h1>
@@ -213,11 +152,32 @@ class App extends Component {
             </button>
           </div>
         </div>
-        <TaskList tasks={tasks} onDelete={this.onDelete} onEdit={this.onEdit} />
-        {elmTaskFrom}
+        <TaskList onEdit={this.onEdit} />
+        <TaskForm
+        />
       </div>
     );
   }
 }
 
-export default App;
+
+const mapStateToProps = (state) => {
+  return {
+    isDisplayForm: state.isDisplayForm,
+    itemEditting: state.itemEditting
+  }
+}
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    onAddTask: (task) => {
+      dispatch(actions.addTask(task))
+    },
+    onToggleForm: () => {
+      dispatch(actions.toggleForm())
+    },
+    onEditTask : (task) => {
+      dispatch(actions.editTask(task))
+    },
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);
