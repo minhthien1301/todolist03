@@ -1,20 +1,39 @@
 import React, { Component } from "react";
 import TaskItem from "./TaskItem.js";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
+import { orderBy } from "lodash";
+import * as actions from "./../actions/index";
 
 class TaskList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  componentDidMount = () => {
+    this.props.listRequest();
+  };
   render() {
-    var { tasks } = this.props;
-    var elmItem = tasks.map((task, index) => {
-      return (
-        <TaskItem
-          key={index}
-          index={index}
-          task={task}
-          onEdit={this.props.onEdit}
-        />
-      );
-    });
+    var { tasks, keyword, sortValue } = this.props;   
+    if (keyword) {
+      tasks = tasks.filter(task => {
+        return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+      });
+    }
+    if (sortValue === 1) {
+      tasks = orderBy(tasks, ["name"], ["asd"]);
+    } else if (sortValue === -1) {
+      tasks = orderBy(tasks, ["name"], ["desc"]);
+    }
+      var elmItem = tasks.map((task, index) => {
+        return (
+          <TaskItem
+            key={index}
+            index={index}
+            task={task}
+            onEdit={this.props.onEdit}
+          />
+        );
+      });
     return (
       <div className="row">
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 pd-40">
@@ -41,14 +60,22 @@ class TaskList extends Component {
     );
   }
 }
-const mapStateToProps = (state ) => {
+const mapStateToProps = state => {
   return {
-    tasks: state.tasks
-  }
-}
+    tasks: state.tasks,
+    keyword: state.search,
+    sortValue: state.sort
+  };
+};
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    listRequest: () => {
+      dispatch(actions.listRequest());
+    }
+  };
+};
 
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(TaskList)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TaskList);

@@ -40,29 +40,12 @@ class TaskForm extends Component {
     }
   }
 
-  // onSubmit = event => {
-  //   event.preventDefault();
-  //   this.props.onSubmit(this.state);
-  //   this.onClear();
-  //   this.onCloseForm();
-  // };
   onSubmit = fields => {
-    this.props.onAddTask(fields);
+    this.props.onAddTaskRequest(fields);
     this.onClear();
     this.props.onCloseForm();
   };
 
-  // onChange = event => {
-  //   var target = event.target;
-  //   var name = target.name;
-  //   var value = target.value;
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // };
-  // onCloseForm = () => {
-  //   this.props.onCloseForm();
-  // };
   onClear = () => {
     this.setState({
       // id: "",
@@ -158,8 +141,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    onAddTask: (task) => {
-      dispatch(actions.addTask(task))
+    onAddTaskRequest: (task) => {
+      dispatch(actions.addTaskRequest(task))
     },
     onCloseForm: () => {
       dispatch(actions.closeForm())

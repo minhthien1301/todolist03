@@ -15,39 +15,46 @@ var findIndex = (tasks, id) => {
   });
   return resulf;
 };
-
-var data = JSON.parse(localStorage.getItem("tasks"));
-var initialState = data ? data : [];
+var initialState = [];
 var tasks = (state = initialState, action) => {
   switch (action.type) {
-    case types.LIST_TASK:
+    // list all
+    case types.LIST_REQUEST:
+      return [...state];
+    case types.LIST_SUCCESS:   
+      state = action.tasks;
       return state;
-
-    case types.ADD_TASK: {
-      if (action.task.id === "") {
-        let newTask = {
-          id: generateID(),
-          name: action.task.name,
-          status: action.task.status
-        };
-        state.push(newTask);
-      }
-      else{
-        let index = findIndex(state, action.task.id);
-        state[index] = action.task;
-      }
-
+    case types.LIST_ERRORS:
+      return [...state];
+    // Add task
+    case types.ADD_TASK_SUCCESS: {
+      var newTask = {
+        id: generateID(),
+        name: action.task.name,
+        status: action.task.status
+      };
+      state.push(newTask);
       localStorage.setItem("tasks", JSON.stringify(state));
       return [...state];
     }
+    case types.ADD_TASK_ERRORS:
+      return [...state];
+    case types.ADD_TASK_REQUEST:
+      return [...state];
 
-    case types.DELETE_TASK: {
+    //delete task
+    case types.DELETE_TASK_SUCCESS: {
       let index = findIndex(state, action.id);
       state.splice(index, 1);
       localStorage.setItem("tasks", JSON.stringify(state));
       return [...state];
     }
-
+    case types.DELETE_TASK_ERRORS: {
+      return [...state];
+    }
+    case types.DELETE_TASK_REQUEST: {
+      return [...state];
+    }
     default:
       return state;
   }

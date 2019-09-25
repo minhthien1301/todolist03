@@ -1,7 +1,30 @@
-export const LIST_TASK = "LIST_TASK";
-export const ADD_TASK = "ADD_TASK";
+//list all
+export const LIST_REQUEST = "LIST_REQUEST";
+export const LIST_SUCCESS = "LIST_SUCCESS";
+export const LIST_ERRORS = "LIST_ERRORS";
+
+//open or close form
 export const TOGGLE_FORM = "TOGGLE_FORM";
 export const OPEN_FORM = "OPEN_FORM";
 export const CLOSE_FORM = "CLOSE_FORM";
-export const DELETE_TASK = "DELETE_TASK";
+
+//Delete  task
+export const DELETE_TASK_REQUEST = "DELETE_TASK_REQUEST";
+export const DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS";
+export const DELETE_TASK_ERRORS = "DELETE_TASK_ERRORS";
+
+//Add tasks
+export const ADD_TASK_REQUEST = "ADD_TASK_REQUEST";
+export const ADD_TASK_SUCCESS = "ADD_TASK_SUCCESS";
+export const ADD_TASK_ERRORS = "ADD_TASK_ERRORS";
+
+
 export const EDIT_TASK = "EDIT_TASK";
+
+//Search task
+export const SEARCH_REQUEST = 'SEARCH_REQUEST';
+export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+export const SEARCH_ERRORS = 'SEARCH_ERRORS';
+
+
+export const SORT = 'SORT';
