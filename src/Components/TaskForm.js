@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import {connect} from "react-redux";
-import * as actions from "./../actions/index"
+import { connect } from "react-redux";
+import * as actions from "./../actions/index";
 
 class TaskForm extends Component {
   constructor(props) {
@@ -13,7 +13,6 @@ class TaskForm extends Component {
       status: "small"
     };
   }
-  //setsate là đưa dư liệu vào state
   componentDidMount() {
     if (this.props.itemEditting) {
       this.setState({
@@ -30,8 +29,7 @@ class TaskForm extends Component {
         name: nextProps.itemEditting.name,
         status: nextProps.itemEditting.status
       });
-    } 
-    else if (!nextProps.itemEditting) {
+    } else if (!nextProps.itemEditting) {
       this.setState({
         id: "",
         name: "",
@@ -41,9 +39,15 @@ class TaskForm extends Component {
   }
 
   onSubmit = fields => {
-    this.props.onAddTaskRequest(fields);
-    this.onClear();
-    this.props.onCloseForm();
+    
+    if (fields.id === "") {
+      this.props.onAddTaskRequest(fields);
+      this.props.onCloseForm();
+    } else {
+      this.props.onUpdateTask(fields);
+      this.props.onCloseForm();
+      this.onClear();
+    }
   };
 
   onClear = () => {
@@ -56,17 +60,16 @@ class TaskForm extends Component {
   render() {
     var { id } = this.state;
 
-    var {isDisplayForm} = this.props;
-    if(isDisplayForm === false){
-      return '';
+    var { isDisplayForm } = this.props;
+    if (isDisplayForm === false) {
+      return "";
     }
     return (
       <Formik
         enableReinitialize
         initialValues={this.state}
         validationSchema={Yup.object().shape({
-          name: 
-            Yup.string()
+          name: Yup.string()
             .required("Name is required")
             .trim()
             .min(5, "Name must have min 5 characters")
@@ -105,7 +108,11 @@ class TaskForm extends Component {
                   />
                 </div>
                 <label style={{ float: "left" }}>Trạng thái: </label>
-                <Field component="select" name="status" className="form-control">
+                <Field
+                  component="select"
+                  name="status"
+                  className="form-control"
+                >
                   <option value="small">Small</option>
                   <option value="medium">Medium</option>
                   <option value="hight">hight</option>
@@ -133,20 +140,26 @@ class TaskForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    isDisplayForm: state.isDisplayForm,
-    itemEditting: state.itemEditting
-  }
-}
+    isDisplayForm: state.data.isDisplayForm,
+    itemEditting: state.data.itemEditting
+  };
+};
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    onAddTaskRequest: (task) => {
-      dispatch(actions.addTaskRequest(task))
+    onAddTaskRequest: task => {
+      dispatch(actions.addTaskRequest(task));
     },
     onCloseForm: () => {
-      dispatch(actions.closeForm())
+      dispatch(actions.closeForm());
+    },
+    onUpdateTask: task => {
+      dispatch(actions.updateTaskRequest(task));
     }
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(TaskForm);
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TaskForm);

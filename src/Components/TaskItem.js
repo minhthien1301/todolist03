@@ -13,10 +13,9 @@ class TaskItem extends Component {
       return "label label-success";
     }
   };
-  onDelete = () => {
-    
-    this.props.onDeleteTask(this.props.task.id);
-    
+  onDelete = () => {    
+    this.props.onDeleteTask(this.props.task.id);   
+    this.props.onCloseForm();
   };
   onEdit = () => {
     this.props.onEditTask(this.props.task);
@@ -54,7 +53,7 @@ class TaskItem extends Component {
 
 const mapStateToProps = (state) => {
   return {
-
+    
   }
 }
 const mapDispatchToProps = (dispatch, props) => {
@@ -63,10 +62,13 @@ const mapDispatchToProps = (dispatch, props) => {
       dispatch(actions.deleteTaskRequest(id))
     },
     onEditTask : (task) => {
-      dispatch(actions.editTask(task))
+      dispatch(actions.editTaskRequest(task))
     },
     onOpenForm: () => {
       dispatch(actions.openForm())
+    },
+    onCloseForm: () => {
+      dispatch(actions.closeForm())
     }
   }
 }

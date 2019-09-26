@@ -13,7 +13,7 @@ class TaskList extends Component {
     this.props.listRequest();
   };
   render() {
-    var { tasks, keyword, sortValue } = this.props;   
+    var { tasks, keyword, sortValue } = this.props;  
     if (keyword) {
       tasks = tasks.filter(task => {
         return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
@@ -62,9 +62,9 @@ class TaskList extends Component {
 }
 const mapStateToProps = state => {
   return {
-    tasks: state.tasks,
-    keyword: state.search,
-    sortValue: state.sort
+    tasks: state.data.tasks,
+    keyword: state.data.search,
+    sortValue: state.data.sort
   };
 };
 const mapDispatchToProps = (dispatch, props) => {

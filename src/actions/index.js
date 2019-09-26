@@ -75,24 +75,57 @@ export const closeForm = () => {
   };
 };
 
-export const editTask = task => {
+//edit task
+export const editTaskRequest = task => {
   return {
-    type: types.EDIT_TASK,
+    type: types.EDIT_TASK_REQUEST,
+    task
+  };
+};
+export const editTaskSuccess = task => {
+  return {
+    type: types.EDIT_TASK_SUCCESS,
+    task
+  };
+};
+export const editTaskError = error => {
+  return {
+    type: types.EDIT_TASK_ERRORS,
+    error
+  };
+};
+
+//Update task
+export const updateTaskRequest = task => {
+  return {
+    type: types.UPDATE_TASK_REQUEST,
+    task
+  };
+};
+export const updateTaskSuccess = task => {
+  return {
+    type: types.UPDATE_TASK_SUCCESS,
+    task
+  };
+};
+export const updateTaskError = task => {
+  return {
+    type: types.UPDATE_TASK_ERRORS,
     task
   };
 };
 
 //Search task
-export const searchTaskRequest = keyword => {
+export const searchTaskRequest = search => {
   return {
     type: types.SEARCH_REQUEST,
-    keyword
+    search
   };
 };
-export const searchTaskSuccess = keyword => {
+export const searchTaskSuccess = search => {
     return {
       type: types.SEARCH_SUCCESS,
-      keyword
+      search
     };
   };
   export const searchTaskError = () => {
@@ -102,9 +135,23 @@ export const searchTaskSuccess = keyword => {
     };
   };
 
-export const sortTask = sortValue => {
+//sort task
+export const sortTaskError = error => {
   return {
-    type: types.SORT,
-    sortValue
+    type: types.SORT_ERRORS,
+    error: 'error'
   };
 };
+export const sortTaskRequest = sort => {
+  return {
+    type: types.SORT_REQUEST,
+    sort
+  };
+};
+export const sortTaskSuccess = sort => {
+  return {
+    type: types.SORT_SUCCESS,
+    sort
+  };
+};
+

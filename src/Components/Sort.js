@@ -11,11 +11,9 @@ class Sort extends Component {
   }
   onChange = event => {
     var target = event.target;
-    var value = target.value; 
-    value = parseInt(value, 10); // tên hàm a thiện
-    this.props.onSort(value);   
-    console.log( value);
-    
+    var value = target.value;
+    value = parseInt(value, 10);
+    this.props.onSort(value);
   };
   render() {
     return (
@@ -24,9 +22,8 @@ class Sort extends Component {
           name="filterName"
           className="form-control"
           onChange={this.onChange}
- 
-        > 
-          <option value={0}>ALL</option> 
+        >
+          <option value={0}>ALL</option>
           <option value={1}>ASD</option>
           <option value={-1}>DESC</option>
         </select>
@@ -40,7 +37,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     onSort: sortValue => {
-      dispatch(actions.sortTask(sortValue));
+      dispatch(actions.sortTaskRequest(sortValue));
     }
   };
 };

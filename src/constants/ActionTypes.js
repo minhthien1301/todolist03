@@ -18,13 +18,22 @@ export const ADD_TASK_REQUEST = "ADD_TASK_REQUEST";
 export const ADD_TASK_SUCCESS = "ADD_TASK_SUCCESS";
 export const ADD_TASK_ERRORS = "ADD_TASK_ERRORS";
 
+//edit task
+export const EDIT_TASK_REQUEST = "EDIT_TASK_REQUEST";
+export const EDIT_TASK_SUCCESS = "EDIT_TASK_SUCCESS";
+export const EDIT_TASK_ERRORS = "EDIT_TASK_ERRORS";
 
-export const EDIT_TASK = "EDIT_TASK";
+// update task
+export const UPDATE_TASK_REQUEST = "UPDATE_TASK_REQUEST";
+export const UPDATE_TASK_SUCCESS = "UPDATE_TASK_SUCCESS";
+export const UPDATE_TASK_ERRORS= "UPDATE_TASK_ERRORS";
 
 //Search task
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
 export const SEARCH_ERRORS = 'SEARCH_ERRORS';
 
-
-export const SORT = 'SORT';
+//sort task
+export const SORT_REQUEST = 'SORT_REQUEST';
+export const SORT_SUCCESS = 'SORT_SUCCESS';
+export const SORT_ERRORS = 'SORT_ERRORS';

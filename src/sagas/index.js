@@ -20,8 +20,9 @@ function* listTasks() {
 }
 
 //Delete stask
-function* deleteTasks(id) {
-  if (id) {
+function* deleteTasks(action) {
+  var id = action.id;
+  if (action) {
     yield put({
       type: types.DELETE_TASK_SUCCESS,
       id: id
@@ -49,17 +50,71 @@ function* addTasks(action) {
   }
 }
 
+//edit task
+function* editTasks(action){
+  console.log(action);
+  
+  try {
+    yield put({
+      type: types.EDIT_TASK_SUCCESS,
+      task: action.task
+    });
+    
+  } catch (error) {
+    yield put({
+      type: types.EDIT_TASK_ERRORS,
+      error
+    });
+  }
+}
+
+//update task
+function* updateTasks(action){
+  console.log(action);
+  try {
+    
+    
+    yield put({
+      type: types.UPDATE_TASK_SUCCESS,
+      task: action.task
+    });
+    
+  } catch (error) {
+    yield put({
+      type: types.UPDATE_TASK_ERRORS,
+      error
+    });
+  }
+}
+
 //Search
 function* searchTasks(action) {
-  const { keyword } = action;
+  const { search } = action;
   if (action) {
     yield put({
       type: types.SEARCH_SUCCESS,
-      keyword
+      search
     });
+
   } else {
     yield put({
       type: types.SEARCH_ERRORS,
+      error: "error"
+    });
+  }
+}
+
+//Sort
+function* sortTasks(action) {
+  const { sort } = action;
+  if (action) { 
+    yield put({
+      type: types.SORT_SUCCESS,
+      sort
+    });
+  } else {
+    yield put({
+      type: types.SORT_ERRORS,
       error: "error"
     });
   }
@@ -74,14 +129,25 @@ function* deleteListTask() {
 function* addTask() {
   yield takeLatest(types.ADD_TASK_REQUEST, addTasks);
 }
+function* editTask(){
+  yield takeLatest(types.EDIT_TASK_REQUEST, editTasks);
+}
 function* searchtask() {
   yield takeLatest(types.SEARCH_REQUEST, searchTasks);
 }
-
+function* sortTask() {
+  yield takeLatest(types.SORT_REQUEST, sortTasks);
+}
+function* updateTask(){
+  yield takeLatest(types.UPDATE_TASK_REQUEST, updateTasks);
+}
 function* rootSaga() {
   yield fork(watchListTasks);
   yield fork(deleteListTask);
   yield fork(addTask);
+  yield fork(editTask);
   yield fork(searchtask);
+  yield fork(sortTask);
+  yield fork(updateTask);
 }
 export default rootSaga;

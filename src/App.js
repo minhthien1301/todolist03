@@ -13,9 +13,9 @@ class App extends Component {
       this.props.onEditTask(null);
     } else {
       this.props.onToggleForm();
+      this.props.onEditTask(null);
     }
   };
-
   render() {
     return (
       <div className="container">
@@ -45,8 +45,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    isDisplayForm: state.isDisplayForm,
-    itemEditting: state.itemEditting
+    isDisplayForm: state.data.isDisplayForm,
+    itemEditting: state.data.itemEditting
   };
 };
 const mapDispatchToProps = (dispatch, props) => {
@@ -55,7 +55,7 @@ const mapDispatchToProps = (dispatch, props) => {
       dispatch(actions.toggleForm());
     },
     onEditTask: task => {
-      dispatch(actions.editTask(task));
+      dispatch(actions.editTaskRequest(task));
     }
   };
 };
