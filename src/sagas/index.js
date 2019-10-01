@@ -1,11 +1,16 @@
 import { fork, put, takeLatest } from "redux-saga/effects";
 import * as types from "./../constants/ActionTypes";
+import { api } from "./api";
 
-const data = JSON.parse(localStorage.getItem("tasks"));
+// const data = JSON.parse(localStorage.getItem("tasks"))
+//   ? JSON.parse(localStorage.getItem("tasks"))
+//   : [];
 
 //Show tasks
 function* listTasks() {
   try {
+    const response = yield api.listTasks();
+    const data = response.data ? response.data : [];
     const tasks = [...data];
     yield put({
       type: types.LIST_SUCCESS,
@@ -21,11 +26,12 @@ function* listTasks() {
 
 //Delete stask
 function* deleteTasks(action) {
-  var id = action.id;
   if (action) {
+    let id = action.id;
+    const response = yield api.deleteTaskAPI(id);
     yield put({
       type: types.DELETE_TASK_SUCCESS,
-      id: id
+      id: response.data.id
     });
   } else {
     yield put({
@@ -38,9 +44,11 @@ function* deleteTasks(action) {
 //Add tasks
 function* addTasks(action) {
   try {
+    const { task } = action;
+    const response = yield api.addTaskAPI(task);
     yield put({
       type: types.ADD_TASK_SUCCESS,
-      task: action.task
+      task: response.data
     });
   } catch (err) {
     yield put({
@@ -51,15 +59,12 @@ function* addTasks(action) {
 }
 
 //edit task
-function* editTasks(action){
-  console.log(action);
-  
+function* editTasks(action) {
   try {
     yield put({
       type: types.EDIT_TASK_SUCCESS,
       task: action.task
     });
-    
   } catch (error) {
     yield put({
       type: types.EDIT_TASK_ERRORS,
@@ -69,16 +74,14 @@ function* editTasks(action){
 }
 
 //update task
-function* updateTasks(action){
-  console.log(action);
+function* updateTasks(action) {
   try {
-    
-    
+    const { task } = action;
+    const response = yield api.updateTaskAPI(task);
     yield put({
       type: types.UPDATE_TASK_SUCCESS,
-      task: action.task
+      task: response.data
     });
-    
   } catch (error) {
     yield put({
       type: types.UPDATE_TASK_ERRORS,
@@ -95,7 +98,6 @@ function* searchTasks(action) {
       type: types.SEARCH_SUCCESS,
       search
     });
-
   } else {
     yield put({
       type: types.SEARCH_ERRORS,
@@ -107,7 +109,7 @@ function* searchTasks(action) {
 //Sort
 function* sortTasks(action) {
   const { sort } = action;
-  if (action) { 
+  if (action) {
     yield put({
       type: types.SORT_SUCCESS,
       sort
@@ -129,7 +131,7 @@ function* deleteListTask() {
 function* addTask() {
   yield takeLatest(types.ADD_TASK_REQUEST, addTasks);
 }
-function* editTask(){
+function* editTask() {
   yield takeLatest(types.EDIT_TASK_REQUEST, editTasks);
 }
 function* searchtask() {
@@ -138,7 +140,7 @@ function* searchtask() {
 function* sortTask() {
   yield takeLatest(types.SORT_REQUEST, sortTasks);
 }
-function* updateTask(){
+function* updateTask() {
   yield takeLatest(types.UPDATE_TASK_REQUEST, updateTasks);
 }
 function* rootSaga() {

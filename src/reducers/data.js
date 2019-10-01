@@ -1,11 +1,5 @@
 import * as types from "../constants/ActionTypes";
 
-var generateID = () => {
-  var randomstring = require("randomstring");
-  var id = randomstring.generate();
-  return id;
-};
-
 var findIndex = (tasks, id) => {
   var resulf = -1;
   tasks.forEach((task, index) => {
@@ -34,38 +28,35 @@ var data = (state = initialState, action) => {
       return {};
 
     // Add task
+    case types.ADD_TASK_REQUEST:
+      return { ...state };
     case types.ADD_TASK_SUCCESS: {
-      let tasks = [...state.tasks];
-      var newTask = {
-        id: generateID(),
+      let newTask = {
         name: action.task.name,
         status: action.task.status
       };
-      tasks.push(newTask);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      return { ...state, tasks };
+      
+      return { ...state, tasks: [...state.tasks, newTask] };
     }
     case types.ADD_TASK_ERRORS:
       return { ...state };
-    case types.ADD_TASK_REQUEST:
-      return { ...state };
 
     //delete task
+    case types.DELETE_TASK_REQUEST: {
+      return { ...state };
+    }
     case types.DELETE_TASK_SUCCESS: {
       let index = findIndex(state.tasks, action.id);
       state = {
         ...state,
         tasks: [...state.tasks.slice(0, index), ...state.tasks.slice(index + 1)]
       };
-      localStorage.setItem("tasks", JSON.stringify(state.tasks));
       return { ...state };
     }
     case types.DELETE_TASK_ERRORS: {
       return { ...state };
     }
-    case types.DELETE_TASK_REQUEST: {
-      return { ...state };
-    }
+
     //toggle form
     case types.TOGGLE_FORM:
       state = { ...state, isDisplayForm: !state.isDisplayForm };
@@ -114,14 +105,13 @@ var data = (state = initialState, action) => {
     case types.UPDATE_TASK_REQUEST:
       return { ...state };
     case types.UPDATE_TASK_SUCCESS:
-        let newItems = [...state.tasks];
-        let index = newItems.findIndex(task => {
-          return task.id === action.task.id;
-        }); 
-        newItems[index] = action.task;
-        state = { ...state, tasks: newItems };
-        localStorage.setItem("tasks", JSON.stringify(state.tasks));  
-        return {...state};
+      let newItems = [...state.tasks];
+      let index = newItems.findIndex(task => {
+        return task.id === action.task.id;
+      });
+      newItems[index] = action.task;
+      state = { ...state, tasks: newItems };
+      return { ...state };
     case types.UPDATE_TASK_ERRORS:
       return { ...state };
     default:

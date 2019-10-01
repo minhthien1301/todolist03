@@ -19,9 +19,9 @@ class TaskList extends Component {
         return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
       });
     }
-    if (sortValue === 1) {
+    if (sortValue === -1) {
       tasks = orderBy(tasks, ["name"], ["asd"]);
-    } else if (sortValue === -1) {
+    } else if (sortValue === 1) {
       tasks = orderBy(tasks, ["name"], ["desc"]);
     }
       var elmItem = tasks.map((task, index) => {
