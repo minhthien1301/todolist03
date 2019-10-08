@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = "http://5d91a864741bd4001411645b.mockapi.io/tasks";
+// const url = "http://5d91a864741bd4001411645b.mockapi.io/tasks";
+const url = "http://localhost:4000/tasks";
 function listTasks() {
   return axios({
     method: "GET",
@@ -30,7 +31,7 @@ function deleteTaskAPI(param) {
 function updateTaskAPI(task) {
   return axios({
     method: "PUT",
-    url: `${url}/${task.id}`,
+    url: `${url}/${task._id}`,
     data: task
   });
 }

@@ -8,30 +8,32 @@ class TaskForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
+      _id: "",
       name: "",
       status: "small"
     };
   }
   componentDidMount() {
-    if (this.props.itemEditting) {
+    if (this.props.itemEditting && this.props.itemEditting._id !== null) {
       this.setState({
-        id: this.props.itemEditting.id,
+        _id: this.props.itemEditting._id,
         name: this.props.itemEditting.name,
         status: this.props.itemEditting.status
       });
+    } else {
+      this.onClear();
     }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps && nextProps.itemEditting) {
       this.setState({
-        id: nextProps.itemEditting.id,
+        _id: nextProps.itemEditting._id,
         name: nextProps.itemEditting.name,
         status: nextProps.itemEditting.status
       });
     } else if (!nextProps.itemEditting) {
       this.setState({
-        id: "",
+        _id: "",
         name: "",
         status: "small"
       });
@@ -39,8 +41,7 @@ class TaskForm extends Component {
   }
 
   onSubmit = fields => {
-    
-    if (fields.id === "") {
+    if (fields._id === "") {
       this.props.onAddTaskRequest(fields);
       this.props.onCloseForm();
     } else {
@@ -58,7 +59,7 @@ class TaskForm extends Component {
     });
   };
   render() {
-    var { id } = this.state;
+    var { _id } = this.state;
 
     var { isDisplayForm } = this.props;
     if (isDisplayForm === false) {
@@ -79,7 +80,7 @@ class TaskForm extends Component {
           <div className="panel panel-warning col-md-6 col-md-offset-3 ">
             <div className="panel-heading">
               <h3 className="panel-title">
-                {id === "" ? "Add Item" : "Edit Item"}
+                {_id === "" ? "Add Item" : "Edit Item"}
                 <i
                   className="fa fa-times-circle pd-16"
                   aria-hidden="true"

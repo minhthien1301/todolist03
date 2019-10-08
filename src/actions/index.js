@@ -18,16 +18,16 @@ export const listErrors = () => {
 };
 
 //delete task
-export const deleteTaskRequest = id => {
+export const deleteTaskRequest = _id => {
   return {
     type: types.DELETE_TASK_REQUEST,
-    id
+    _id
   };
 };
-export const deleteTaskSuccess = id => {
+export const deleteTaskSuccess = _id => {
   return {
     type: types.DELETE_TASK_SUCCESS,
-    id
+    _id
   };
 };
 export const deleteTaskErrors = error => {

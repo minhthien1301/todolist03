@@ -2,10 +2,6 @@ import { fork, put, takeLatest } from "redux-saga/effects";
 import * as types from "./../constants/ActionTypes";
 import { api } from "./api";
 
-// const data = JSON.parse(localStorage.getItem("tasks"))
-//   ? JSON.parse(localStorage.getItem("tasks"))
-//   : [];
-
 //Show tasks
 function* listTasks() {
   try {
@@ -27,11 +23,11 @@ function* listTasks() {
 //Delete stask
 function* deleteTasks(action) {
   if (action) {
-    let id = action.id;
-    const response = yield api.deleteTaskAPI(id);
+    const { _id } = action;
+    yield api.deleteTaskAPI(_id);
     yield put({
       type: types.DELETE_TASK_SUCCESS,
-      id: response.data.id
+      _id
     });
   } else {
     yield put({
@@ -43,12 +39,13 @@ function* deleteTasks(action) {
 
 //Add tasks
 function* addTasks(action) {
-  try {
+  try {   
     const { task } = action;
-    const response = yield api.addTaskAPI(task);
+    const newTask = {name: task.name, status: task.status};
+    const response = yield api.addTaskAPI(newTask);
     yield put({
       type: types.ADD_TASK_SUCCESS,
-      task: response.data
+      data: response.data
     });
   } catch (err) {
     yield put({
@@ -59,12 +56,12 @@ function* addTasks(action) {
 }
 
 //edit task
-function* editTasks(action) {
+function* editTasks(action) { 
   try {
     yield put({
       type: types.EDIT_TASK_SUCCESS,
       task: action.task
-    });
+    });    
   } catch (error) {
     yield put({
       type: types.EDIT_TASK_ERRORS,
@@ -75,13 +72,16 @@ function* editTasks(action) {
 
 //update task
 function* updateTasks(action) {
+  console.log(action);
+  
   try {
     const { task } = action;
-    const response = yield api.updateTaskAPI(task);
+    yield api.updateTaskAPI(task);
     yield put({
       type: types.UPDATE_TASK_SUCCESS,
-      task: response.data
+      task: action.task
     });
+    
   } catch (error) {
     yield put({
       type: types.UPDATE_TASK_ERRORS,

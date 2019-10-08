@@ -3,7 +3,7 @@ import * as types from "../constants/ActionTypes";
 var findIndex = (tasks, id) => {
   var resulf = -1;
   tasks.forEach((task, index) => {
-    if (task.id === id) {
+    if (task._id === id) {
       resulf = index;
     }
   });
@@ -30,13 +30,8 @@ var data = (state = initialState, action) => {
     // Add task
     case types.ADD_TASK_REQUEST:
       return { ...state };
-    case types.ADD_TASK_SUCCESS: {
-      let newTask = {
-        name: action.task.name,
-        status: action.task.status
-      };
-      
-      return { ...state, tasks: [...state.tasks, newTask] };
+    case types.ADD_TASK_SUCCESS: {     
+      return { ...state, tasks :[...state.tasks, action.data] };
     }
     case types.ADD_TASK_ERRORS:
       return { ...state };
@@ -46,7 +41,7 @@ var data = (state = initialState, action) => {
       return { ...state };
     }
     case types.DELETE_TASK_SUCCESS: {
-      let index = findIndex(state.tasks, action.id);
+      let index = findIndex(state.tasks, action._id);
       state = {
         ...state,
         tasks: [...state.tasks.slice(0, index), ...state.tasks.slice(index + 1)]
@@ -103,14 +98,18 @@ var data = (state = initialState, action) => {
 
     //update task
     case types.UPDATE_TASK_REQUEST:
+      console.log(action);
+      
       return { ...state };
     case types.UPDATE_TASK_SUCCESS:
       let newItems = [...state.tasks];
       let index = newItems.findIndex(task => {
-        return task.id === action.task.id;
+        return task._id === action.task._id;
       });
+      console.log(action.task);
+      
       newItems[index] = action.task;
-      state = { ...state, tasks: newItems };
+      state = { ...state, tasks: newItems };   
       return { ...state };
     case types.UPDATE_TASK_ERRORS:
       return { ...state };
