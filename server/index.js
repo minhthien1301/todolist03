@@ -5,7 +5,7 @@ var itemRoute = require("./API/routes/tasks.route");
 var mongoose = require("mongoose");
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
-
+// thay doi
 var cors = require("cors");
 cors = require("cors");
 
